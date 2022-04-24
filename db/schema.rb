@@ -10,8 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_23_120533) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_24_134133) do
   # These are extensions that must be enabled in order to support this database
+  enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
   create_table "users", force: :cascade do |t|
@@ -20,6 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_23_120533) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "password_digest"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
