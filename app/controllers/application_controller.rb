@@ -1,4 +1,5 @@
 class ApplicationController < ActionController::Base
+  protect_from_forgery with: :null_session
   before_action :require_jwt, except: %i[authentication]
   SECRET = 'yoursecretword'
   include SessionsHelper
@@ -37,10 +38,7 @@ class ApplicationController < ActionController::Base
   end
 
   def encode_user_data(payload)
-    JWT.encode payload, SECRET, 'HS256'
-  end
-
-  def encode_user_data(payload)
+    puts payload
     JWT.encode payload, SECRET, 'HS256'
   end
 

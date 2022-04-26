@@ -10,10 +10,31 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_24_134133) do
+ActiveRecord::Schema[7.0].define(version: 2022_04_26_201146) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
+
+  create_table "ranges", force: :cascade do |t|
+    t.string "from"
+    t.string "to"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "task_id", null: false
+    t.index ["task_id"], name: "index_ranges_on_task_id"
+  end
+
+  create_table "tasks", force: :cascade do |t|
+    t.string "task_name"
+    t.string "task_category"
+    t.string "task_ranges"
+    t.string "task_status"
+    t.integer "cost"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_tasks_on_user_id"
+  end
 
   create_table "users", force: :cascade do |t|
     t.string "name"
@@ -22,7 +43,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_24_134133) do
     t.datetime "updated_at", null: false
     t.string "password_digest"
     t.uuid "uuid", default: -> { "gen_random_uuid()" }
+    t.string "tasks"
     t.index ["email"], name: "index_users_on_email", unique: true
   end
 
+  add_foreign_key "ranges", "tasks"
+  add_foreign_key "tasks", "users"
 end
