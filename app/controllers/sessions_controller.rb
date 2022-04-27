@@ -2,11 +2,6 @@ class SessionsController < ApplicationController
   protect_from_forgery with: :null_session
   before_action :require_jwt, except: %i[create]
 
-  # for testing only
-  def find
-    current_user
-  end
-
   def create
     user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])

@@ -15,5 +15,17 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
 
   post   '/task', to: 'tasks#create'
+  get '/task/:id', to: 'tasks#show'
+  patch '/task/:id', to: 'tasks#update'
+  delete '/task/:id', to: 'tasks#destroy'
   get '/tasks', to: 'tasks#index'
+
+  post '/range', to: 'ranges#create'
+  get 'range/:id', to: 'ranges#show'
+  patch '/range/:id', to: 'ranges#update'
+  delete '/range/:id', to: 'ranges#destroy'
+  get '/ranges', to: 'ranges#index'
+
+  # post '/task', to: 'tasks#create'
+  # get '/tasks', to: 'tasks#index'
 end

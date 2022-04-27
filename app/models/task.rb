@@ -1,4 +1,4 @@
 class Task < ApplicationRecord
   belongs_to :user
-  has_many :ranges
+  has_many :task_ranges
 end

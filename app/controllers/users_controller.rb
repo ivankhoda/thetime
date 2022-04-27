@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   protect_from_forgery with: :null_session
+  before_action :require_jwt, except: %i[create]
   def new
     @user = User.new
   end
