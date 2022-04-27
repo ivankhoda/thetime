@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  task_name: MyString
+  task_category: MyString
+  task_ranges: MyString
+  task_status: MyString
+  cost: 1
+
+two:
+  task_name: MyString
+  task_category: MyString
+  task_ranges: MyString
+  task_status: MyString
+  cost: 1
