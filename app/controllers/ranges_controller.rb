@@ -37,6 +37,17 @@ class RangesController < ApplicationController
     end
   end
 
+  def destroy
+    @task = current_user.tasks.find_by(id: range_params[:task_id])
+    range = @task.task_ranges.find_by(id: params[:id])
+    if !range.nil?
+      range.destroy
+      render json: { message: 'Range deleted' }
+    else
+      render json: { error: 'Range not found' }, status: 422
+    end
+  end
+
   def range_params
     params.require(:range).permit(:from, :to, :task_id)
   end

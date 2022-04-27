@@ -16,6 +16,7 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     @task.user_id = current_user.id
+
     if @task.save
       render json: { task: @task }
     else
@@ -40,6 +41,31 @@ class TasksController < ApplicationController
       render json: { message: 'Task was removed' }
     else
       render json: { error: 'Task not found' }, status: 422
+    end
+  end
+
+  def start
+    @task = current_user.tasks.find_by(id: params[:task][:task_id])
+    task_range = TaskRange.new(from: DateTime.current)
+    @task.task_ranges.push(task_range)
+
+    if !@task.nil?
+      @task.update(task_params)
+      render json: { task: @task }
+    else
+      render json: { error: 'Task not found' }, status: 422
+    end
+  end
+
+  def stop
+    task = current_user.tasks.find_by(id: params[:task][:task_id])
+    task_range = task.task_ranges.find { |range| range.to.blank? }
+    puts task_range
+    if task_range.update(to: DateTime.current)
+
+      render json: { message: task_range }
+    else
+      render json: { message: 'Cannot stop task' }
     end
   end
 
