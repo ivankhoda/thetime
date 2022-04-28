@@ -15,9 +15,16 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
-    @task.user_id = current_user.id
+    @task_range = task_range_params.to_h.to_h
 
+    # # Присваиваю задаче юзер ид
+    @task.user_id = current_user.id
+    range = TaskRange.new(@task_range)
+    # # Пытаюсь если задача сохраняется, то я создаю для нее временной промежуток
     if @task.save
+      puts @task, 'task in save'
+
+      range.update(task_id: @task.id)
       render json: { task: @task }
     else
       render json: { message: @task.errors }
@@ -72,7 +79,11 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:task_name, :task_category, :task_ranges, :task_status, :cost)
+    params.require(:task).permit(:task_name, :task_category, :task_status, :cost)
+  end
+
+  def task_range_params
+    params.require(:task).permit(task_ranges: %i[from to])
   end
 
   def find_user_task
