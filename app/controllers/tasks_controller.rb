@@ -15,15 +15,11 @@ class TasksController < ApplicationController
 
   def create
     @task = Task.new(task_params)
-    @task_range = task_range_params.to_h.to_h
-
-    # # Присваиваю задаче юзер ид
+    @task_range = task_range_params[:task_ranges].to_h.to_h if task_range_params
+    range = TaskRange.new(from: @task_range['from'], to: @task_range['to'])
     @task.user_id = current_user.id
-    range = TaskRange.new(@task_range)
-    # # Пытаюсь если задача сохраняется, то я создаю для нее временной промежуток
-    if @task.save
-      puts @task, 'task in save'
 
+    if @task.save
       range.update(task_id: @task.id)
       render json: { task: @task }
     else
