@@ -4,6 +4,7 @@ class TasksController < ApplicationController
   end
 
   def index
+    puts task_params['from'], 'param from'
     tasks = current_user.tasks
     render json: { tasks: }
   end
@@ -75,7 +76,7 @@ class TasksController < ApplicationController
   private
 
   def task_params
-    params.require(:task).permit(:task_name, :task_category, :task_status, :cost)
+    params.require(:task).permit(:task_name, :task_category, :task_status, :cost, :from, :to)
   end
 
   def task_range_params
