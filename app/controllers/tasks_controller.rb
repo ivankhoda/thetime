@@ -4,8 +4,12 @@ class TasksController < ApplicationController
   end
 
   def index
-    puts task_params['from'], 'param from'
-    tasks = current_user.tasks
+    puts request.query_parameters
+    # tasks = current_user.tasks.where('created_at >= :start_date AND created_at <= :end_date',
+    #                                  { start_date: request.query_parameters[:from],
+    #                                    end_date: request.query_parameters[:to] })
+    tasks = current_user.tasks.order(created_at: :desc)
+    # tasks.order(created_at: :desc)
     render json: { tasks: }
   end
 
@@ -41,6 +45,7 @@ class TasksController < ApplicationController
   def destroy
     task = current_user.tasks.find_by(id: params[:id])
     if !task.nil?
+      task.task_ranges.destroy
       task.destroy
       render json: { message: 'Task was removed' }
     else
