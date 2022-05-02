@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   delete '/task/:id', to: 'tasks#destroy'
   get '/tasks', to: 'tasks#index'
 
+  put 'task/start', to: 'tasks#start'
+  put 'task/stop', to: 'tasks#stop'
+
   post '/range', to: 'ranges#create'
   get 'range/:id', to: 'ranges#show'
   patch '/range/:id', to: 'ranges#update'
